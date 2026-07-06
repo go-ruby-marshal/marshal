@@ -95,3 +95,18 @@ jobs:
               "/work/$bin" -test.v -test.short
             echo "::endgroup::"
           done
+
+  wasm:
+    name: wasm (${{ matrix.goos }}/wasm)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        goos: [js, wasip1]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
+        with:
+          go-version: stable
+      - name: Build ${{ matrix.goos }}/wasm
+        run: GOOS=${{ matrix.goos }} GOARCH=wasm go build ./...
